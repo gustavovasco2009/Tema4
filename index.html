@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Primeiro Web App - Loja de Jogos</title>
+    <style>
+        /* CSS: Aqui definimos a APARÊNCIA (O Estilo) */
+        :root {
+            --primary: #a200ff; /* Cor de "Lanche" */
+            --dark: #2c3e50;
+            --light: #000000;
+            --success: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Container Principal Responsivo */
+        .app-container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+
+        /* Cabeçalho do App */
+        .header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 { margin: 0; font-size: 1.5rem; }
+        .header p { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
+
+        /* "Tela" do Sistema - Onde a lógica aparece */
+        #tela-saida {
+            background-color: var(--dark);
+            color: #00ff00; /* Cor clássica de terminal */
+            padding: 15px;
+            height: 150px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-y: auto;
+            border-bottom: 2px solid #333;
+        }
+
+        /* Área de Interação */
+        .controles {
+            padding: 20px;
+        }
+
+        .input-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus { border-color: var(--primary); }
+
+        button {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        /* Rodapé com o Total */
+        .footer-total {
+            background: #eee;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="header">
+            <h1>🎮 Games Store</h1>
+            <p>Os Melhores Consoles de Todos os Tempos ⚡</p>
+        </div>
+
+        <!-- Esta div funciona como o "escreva" do Portugol -->
+        <div id="tela-saida">
+            Bem-vindo!<br>
+            1 - Playstation 5 (R$ 3.500)<br>
+            2 - Xbox Series X (R$ 3.000)<br>
+            3 - Nintendo Switch (R$ 2.500)<br>
+            4 - FINALIZAR<br>
+            --------------------<br>
+            Digite o número da opção:
+        </div>
+
+        <div class="controles">
+            <div class="input-grupo">
+                <input type="number" id="inputOpcao" placeholder="Ex: 1" min="1" max="4">
+                <button onclick="executarLogica()">Confirmar Opção</button>
+            </div>
+        </div>
+
+        <div class="footer-total" id="exibirTotal">
+            Total: R$ 0,00
+        </div>
+    </div>
+
+    <script>
+        /* JAVASCRIPT: Aqui entra a LÓGICA (O Cérebro) */
+        
+        // 1. Variáveis Globais (Igual no Portugol)
+        let total = 0.0;
+        const tela = document.getElementById("tela-saida");
+        const displayTotal = document.getElementById("exibirTotal");
+
+        function executarLogica() {
+            // Pegamos o valor do input (Igual ao 'leia' do Portugol)
+            const input = document.getElementById("inputOpcao");
+            let opcao = parseInt(input.value);
+
+            // 2. A Estrutura de Decisão (Igual ao Escolha-Caso)
+            switch(opcao) {
+                case 1:
+                    total += 15.00;
+                    imprimirNaTela("✅ Adicionado: Playstation 5 (R$ 3.500)");
+                    break;
+                
+                case 2:
+                    total += 18.00;
+                    imprimirNaTela("✅ Adicionado: Xbox Series X (R$ 3.000)");
+                    break;
+
+                case 3:
+                    total += 22.00;
+                    imprimirNaTela("✅ Adicionado: Nintendo Switch (R$ 2.500)");
+                    break;
+
+                case 4:
+                    imprimirNaTela("💰 Pedido encerrado com sucesso!");
+                    alert("Pedido Finalizado! Valor Total: R$ " + total.toFixed(2));
+                    // Opcional: reiniciar o sistema
+                    // total = 0;
+                    break;
+
+                default:
+                    imprimirNaTela("❌ OPÇÃO INVÁLIDA! Escolha 1, 2, 3 ou 4.");
+            }
+
+            // Atualiza o valor no rodapé (Visual)
+            displayTotal.innerText = "Total: R$ " + total.toFixed(2);
+            
+            // Limpa o campo para a próxima jogada
+            input.value = "";
+            input.focus();
+        }
+
+        // Função auxiliar para "escrever" na nossa tela preta
+        function imprimirNaTela(texto) {
+            tela.innerHTML += "<br>" + texto;
+            // Faz o scroll automático para o final da tela
+            tela.scrollTop = tela.scrollHeight;
+        }
+
+        // Atalho: apertar ENTER também funciona
+        document.getElementById("inputOpcao").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") executarLogica();
+        });
+    </script>
+</body>
+</html>
